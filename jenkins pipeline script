@@ -1,0 +1,123 @@
+***************** k8s-jenkins connecting NODE *******************
+
+
+   	# jenkins+kubernetes master+slave1,slave2)
+	# connecting credential node with k8s public-ip
+	# both server install
+         sudo apt update
+         sudo apt install fontconfig openjdk-17-jre
+	 
+	 sudo apt update
+	 sudo apt install docker.io
+
+
+*********************************************************************
+ 
+	 "HTML,JAVA,NODE,PYTHON - CONNECTING PIPELINE SCRIPT"
+
+*********************************************************************
+             
+            (deployment,service with server in create file)
+
+*************Html**************
+
+node("k8s-master"){
+    stage("clone"){
+     
+        git branch: 'main', url: 'https://github.com/sathish-sempublingam/sample-html-app.git'
+    }
+    
+    stage("docker image"){
+        sh "docker build -t sathishsembulingam/html-app ." 
+    
+    }
+    stage("docker hub"){
+        sh "docker login -u sathishsembulingam -p ssathishmrp105"
+        sh "docker push sathishsembulingam/html-app"
+    
+    }
+    stage("k8s-deployment"){
+        sh "kubectl get pods"
+        sh "kubectl rollout restart deployment my-app"
+        
+    }
+}
+
+
+**********Java**************
+
+node("k8s-master"){
+    stage("clone"){
+        git branch: 'main', url: 'https://github.com/sathish-sempublingam/sample-java-spring-app.git'
+    }
+    stage("docker build"){
+        sh "mvn clean install"
+    }
+    
+    stage("docker image"){
+        sh "docker build -t sathishsembulingam/java-app ." 
+    
+    }
+    stage("docker hub"){
+        sh "docker login -u sathishsembulingam -p ssathishmrp105"
+        sh "docker push sathishsembulingam/java-app"
+    
+    }
+    stage("k8s-deployment"){
+        sh "kubectl get pods"
+        sh "kubectl rollout restart deployment my-app"
+        
+    }
+}
+
+
+**********Node*********
+
+node("k8s-master"){
+    stage("clone"){
+        git branch: 'main', url: 'https://github.com/sathish-sempublingam/sample-java-spring-app.git'
+    }
+    stage("docker build"){
+        sh "mvn clean install"
+    }
+    
+    stage("docker image"){
+        sh "docker build -t sathishsembulingam/java-app ." 
+    
+    }
+    stage("docker hub"){
+        sh "docker login -u sathishsembulingam -p ssathishmrp105"
+        sh "docker push sathishsembulingam/java-app"
+    
+    }
+    stage("k8s-deployment"){
+        sh "kubectl get pods"
+        sh "kubectl rollout restart deployment my-app"
+        
+    }
+}
+
+
+*********Python********
+
+node("k8s-master"){
+    stage("clone"){
+        git branch: 'main', url: 'https://github.com/sathish-sempublingam/sample-python-app.git'
+     
+    }
+    
+    stage("docker image"){
+        sh "docker build -t sathishsembulingam/python-app ." 
+    
+    }
+    stage("docker hub"){
+        sh "docker login -u sathishsembulingam -p ssathishmrp105"
+        sh "docker push sathishsembulingam/python-app"
+    
+    }
+    stage("k8s-deployment"){
+        sh "kubectl get pods"
+        sh "kubectl rollout restart deployment application"
+        
+    }
+}
